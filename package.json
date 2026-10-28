@@ -1,0 +1,52 @@
+{
+  "name": "coolercontrol-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for CoolerControl: read temperatures and fan speeds, manage fan profiles and modes",
+  "type": "module",
+  "bin": {
+    "coolercontrol-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "prepare": "npm run build"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "coolercontrol",
+    "fan-control",
+    "linux",
+    "hardware-monitoring"
+  ],
+  "author": "Ryan Page",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryanpag3/coolercontrol-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ryanpag3/coolercontrol-mcp/issues"
+  },
+  "homepage": "https://github.com/ryanpag3/coolercontrol-mcp#readme",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "undici": "^8.12.3",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
+  }
+}
