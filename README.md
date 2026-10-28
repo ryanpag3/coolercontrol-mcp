@@ -6,31 +6,46 @@ Tested against CoolerControl 5.1.1.
 
 ## Tools
 
-**Monitoring**
+All 32 tools. ✏️ marks tools that change something; they need a token with **Write Access**.
 
-| Tool | What it does |
-|---|---|
-| `get_status` | Latest temperatures (°C), fan rpm/duty, power and clocks, optionally for one device/channel |
-| `list_devices` | Devices with their speed-controllable channels and temperature sensors |
-| `get_channel_settings` | What each fan channel is set to (profile, fixed duty or default) |
-| `get_health` | Daemon version, uptime, warnings |
+| Area | Tool | What it does |
+|---|---|---|
+| Monitoring | `get_status` | Latest temperatures (°C), fan rpm and duty, power and clocks; optionally one device or channel |
+| | `list_devices` | Devices, their fan channels and their temperature sensors |
+| | `get_channel_settings` | What each fan channel is set to: a profile, a fixed duty, or the default |
+| | `get_health` | Daemon version, uptime and warning count |
+| Fan channels | `set_fixed_speed` ✏️ | Set a channel to a fixed duty % (refuses values below `COOLERCONTROL_MIN_DUTY`) |
+| | `apply_profile` ✏️ | Assign a profile to a channel |
+| | `reset_channel` ✏️ | Return a channel to its hardware default |
+| Profiles | `list_profiles` | Profiles with their curves and temperature sources |
+| | `create_profile` ✏️ | Create a Fixed, Graph, Mix or Overlay profile |
+| | `update_profile` ✏️ | Change some fields of a profile; the rest stay as they are |
+| | `delete_profile` ✏️ | Delete a profile; refuses while anything uses it unless `force` is set |
+| Modes | `list_modes` | Saved modes and which one is active |
+| | `get_mode` | The channel settings saved in a mode |
+| | `create_mode` ✏️ | Save the current settings of every channel as a new mode |
+| | `update_mode` ✏️ | Rename a mode and/or re-save it from the current settings |
+| | `duplicate_mode` ✏️ | Copy a mode |
+| | `delete_mode` ✏️ | Delete a mode |
+| | `activate_mode` ✏️ | Apply a mode's saved settings |
+| Functions | `list_functions` | Functions that control how quickly profiles change duty |
+| | `create_function` ✏️ | Create a function; unset fields copy the Default Function |
+| | `update_function` ✏️ | Change some fields of a function |
+| | `delete_function` ✏️ | Delete a function; refuses while a profile uses it unless `force` is set |
+| Alerts | `list_alerts` | Alerts and the recent alert log |
+| | `create_alert` ✏️ | Create an alert on a temperature, duty, load, rpm or frequency |
+| | `update_alert` ✏️ | Change some fields of an alert |
+| | `delete_alert` ✏️ | Delete an alert |
+| Custom sensors | `list_custom_sensors` | Custom sensors |
+| | `create_custom_sensor` ✏️ | Create a sensor that mixes, offsets or averages other sensors, or reads a file |
+| | `update_custom_sensor` ✏️ | Change some fields of a custom sensor |
+| | `delete_custom_sensor` ✏️ | Delete a custom sensor; refuses while a profile uses it unless `force` is set |
+| Any other endpoint | `list_api_endpoints` | List the 83 REST endpoints a token can call |
+| | `call_api` ✏️ | Call any of them: lighting, LCD images, calibration, name overrides, daemon settings, stats, detection, power profiles, logs, metrics |
 
-**Fan channels**: `set_fixed_speed`, `apply_profile`, `reset_channel`. Each returns the channel's previous setting so the change can be undone.
+Devices can be given by uid, uid prefix (8+ characters) or exact name. Channels can be given by name (`fan1`) or label (`Intake`). Profiles, modes, functions and alerts can be given by uid or name.
 
-**Profiles**: `list_profiles`, `create_profile`, `update_profile`, `delete_profile`.
-Profiles can be Fixed, Graph (a temp→duty curve following one sensor), Mix (combines member profiles) or Overlay (offsets a base profile). Sensors and member profiles can be given by name or label. Curves are sorted and checked before anything is sent. Updates change only the fields given. `delete_profile` refuses while a channel, a Mix/Overlay profile or a mode still uses the profile, and lists where, unless `force` is set.
-
-**Modes**: `list_modes`, `get_mode`, `create_mode` (saves the current settings), `update_mode` (rename and/or re-save), `duplicate_mode`, `delete_mode`, `activate_mode`.
-
-**Functions, alerts, custom sensors**: `list_*`, `create_*`, `update_*`, `delete_*`.
-These take the daemon's own field names, and each tool's description lists the common fields. Updates merge onto the current object. New functions start from the Default Function. Deleting a function or custom sensor that a profile uses requires `force`.
-
-**Everything else**: `list_api_endpoints` and `call_api`.
-These cover all 83 REST endpoints a token can call, including lighting, LCD images (uploaded from a local file), fan calibration, name and label overrides, daemon settings, stats, hardware detection, power profiles, ThinkPad and AMD overdrive, logs and Prometheus metrics. Requests are checked against a catalog generated from the CoolerControl OpenAPI document (`scripts/generate-catalog.mjs`).
-
-Devices can be given by uid, by a uid prefix (8+ characters) or by exact name. Channels can be given by name (`fan1`) or by label (`Intake`).
-
-**Not available:** login and password changes, access-token management, daemon shutdown, plugins, stress tests, saving UI settings and the SSE event streams. CoolerControl accepts only a browser session for these, not a token.
+**Not supported:** login and passwords, access-token management, daemon shutdown, plugins, stress tests, saving UI settings and the live event streams. CoolerControl accepts only a browser session for these, not a token.
 
 ## Setup
 
