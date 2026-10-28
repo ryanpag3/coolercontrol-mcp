@@ -55,6 +55,30 @@ Devices can be given by uid, by a uid prefix (8+ characters) or by exact name. C
    }
    ```
 
+### Docker
+
+A multi-arch image (amd64, arm64) is published to GHCR. The daemon listens on `127.0.0.1` by default, so the container needs `--network host` to reach it:
+
+```sh
+claude mcp add coolercontrol -s user -e COOLERCONTROL_TOKEN=cc_... -- \
+  docker run -i --rm --network host -e COOLERCONTROL_TOKEN ghcr.io/ryanpag3/coolercontrol-mcp:latest
+```
+
+```json
+{
+  "mcpServers": {
+    "coolercontrol": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "--network", "host", "-e", "COOLERCONTROL_TOKEN",
+               "ghcr.io/ryanpag3/coolercontrol-mcp:latest"],
+      "env": { "COOLERCONTROL_TOKEN": "cc_..." }
+    }
+  }
+}
+```
+
+Tags: `latest` (master), `sha-<commit>`, and `X.Y.Z` / `X.Y` for `vX.Y.Z` git tags.
+
 ## Configuration
 
 | Variable | Default | |
