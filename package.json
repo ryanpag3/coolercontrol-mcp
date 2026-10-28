@@ -1,6 +1,6 @@
 {
   "name": "coolercontrol-mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "MCP server for CoolerControl: read temperatures and fan speeds, manage fan profiles and modes",
   "type": "module",
   "bin": {

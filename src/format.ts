@@ -150,10 +150,11 @@ export function summarizeProfiles(profiles: Profile[], devices: Device[]) {
         ? { curve: p.speed_profile.map(([temp, duty]) => ({ temp_c: temp, duty })) }
         : {}),
       ...(p.member_profile_uids?.length
-        ? {
-            members: p.member_profile_uids.map((u) => byProfileUid.get(u) ?? u),
-            mix_function: p.mix_function_type,
-          }
+        ? { members: p.member_profile_uids.map((u) => byProfileUid.get(u) ?? u) }
+        : {}),
+      ...(p.mix_function_type ? { mix_function: p.mix_function_type } : {}),
+      ...(p.offset_profile?.length
+        ? { offset: p.offset_profile.map(([duty, offset]) => ({ duty, offset })) }
         : {}),
       ...(p.function_uid ? { function_uid: p.function_uid } : {}),
     };

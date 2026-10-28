@@ -19,6 +19,8 @@ export interface Device {
   info?: {
     channels?: Record<string, ChannelInfo>;
     temps?: Record<string, { label?: string | null }>;
+    temp_min?: number;
+    temp_max?: number;
   } | null;
 }
 
@@ -55,13 +57,38 @@ export interface Profile {
   speed_profile?: [number, number][] | null;
   speed_fixed?: number | null;
   temp_source?: { temp_name: string; device_uid: string } | null;
+  temp_min?: number | null;
+  temp_max?: number | null;
   member_profile_uids?: string[] | null;
   mix_function_type?: string | null;
+  offset_profile?: [number, number][] | null;
 }
 
 export interface Mode {
   uid: string;
   name: string;
+  /** [device_uid, channel settings] pairs. */
+  device_settings?: [string, ChannelSetting[]][];
+}
+
+// Function, Alert and CustomSensor have large, version-dependent schemas. Only
+// the identifying fields are typed; the rest passes through untouched.
+
+export interface Fn {
+  uid: string;
+  name: string;
+  [key: string]: unknown;
+}
+
+export interface Alert {
+  uid: string;
+  name: string;
+  [key: string]: unknown;
+}
+
+export interface CustomSensor {
+  id: string;
+  [key: string]: unknown;
 }
 
 export interface ActiveModes {
